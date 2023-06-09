@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    .drag-element {
+      width: 100px;
+      height: 100px;
+      background-color: #fb7979;
+      margin: 10px;
+      padding: 10px;
+      cursor: move;
+    }
+    .img { display: inline-block; height:100px; width:100px; border-radius:100%; }
+
+    .drop-area {
+      width: 200px;
+      height: 200px;
+      border: 2px dashed #aaa;
+      padding: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div id="dragElement" class="drag-element" draggable="true" >Drag me
+  </div>
+  <div id="dropArea" class="drop-area">Drop here</div>
+  <button id="resetButton">Reset</button>
+
+  <script>
+    const dragElement = document.getElementById('dragElement');
+    const dropArea = document.getElementById('dropArea');
+    const resetButton = document.getElementById('resetButton');
+
+    // Event listeners for drag and drop events
+    dragElement.addEventListener('dragstart', dragStart);
+    dropArea.addEventListener('dragenter', dragEnter);
+    dropArea.addEventListener('dragover', dragOver);
+    dropArea.addEventListener('dragleave', dragLeave);
+    dropArea.addEventListener('drop', drop);
+    resetButton.addEventListener('click', reset);
+
+    // Drag start event handler
+    function dragStart(event) {
+      event.dataTransfer.setData('text/plain', event.target.id);
+    }
+
+    // Drag enter event handler
+    function dragEnter(event) {
+      event.preventDefault();
+      dropArea.classList.add('dragover');
+    }
+
+    // Drag over event handler
+    function dragOver(event) {
+      event.preventDefault();
+    }
+
+    // Drag leave event handler
+    function dragLeave(event) {
+      dropArea.classList.remove('dragover');
+    }
+
+    // Drop event handler
+    function drop(event) {
+      event.preventDefault();
+      const draggedElementId = event.dataTransfer.getData('text/plain');
+      const draggedElement = document.getElementById(draggedElementId);
+      dropArea.appendChild(draggedElement);
+      dropArea.classList.remove('dragover');
+      console.log('Successful drag and drop!');
+    }
+
+    // Reset button click event handler
+    function reset() {
+      dropArea.innerHTML = 'Drop here';
+      console.log('Dropped items have been reset.');
+    }
+  </script>
+</body>
+</html>
